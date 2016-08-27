@@ -1,32 +1,37 @@
-﻿@model friends_circle.Models.Friend
+﻿@model friends_circle.Models.AddFriendViewModel
 
 @{
     ViewBag.Title = "Add Your Friends";
 }
 
-<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm(FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
-    
+    <h2>@ViewBag.Title</h2>
+
+    if (!String.IsNullOrEmpty(Model.message))
+    {
+        <div class="alert alert-danger">
+            @Html.DisplayFor(model => model.message)
+        </div>
+    }
     <div class="form-horizontal">
-        <h4>Add Friend</h4>
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.friend.name, htmlAttributes: new { @class = "control-label col-md-2", required = true })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.name, "What's your friend's name?", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.friend.name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.friend.name, "What's your friend's name?", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            <label for="streetAddress" class="control-label col-md-2">Street Address: </label>
+            @Html.LabelFor(model => model.friend.street, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" id="streetAddress" name="streetAddress" class="form-control" />
+                @Html.EditorFor(model => model.friend.street, new { htmlAttributes = new { @class = "form-control", required = true }})
+                @Html.ValidationMessageFor(model => model.friend.street, "Where does your friend live?", new { @class = "text-danger" })
             </div>
         </div>
 

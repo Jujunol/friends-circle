@@ -22,10 +22,16 @@ namespace friends_circle.Models
         [Key]
         [Column(Order = 2)]
         [StringLength(50)]
-        public string latitude { get; set; }
+        [DisplayName("Street Address: ")]
+        public string street { get; set; }
 
         [Key]
         [Column(Order = 3)]
+        [StringLength(50)]
+        public string latitude { get; set; }
+
+        [Key]
+        [Column(Order = 4)]
         [StringLength(50)]
         public string longitude { get; set; }
     }
