@@ -1,0 +1,40 @@
+﻿@model friends_circle.Models.Friend
+
+@{
+    ViewBag.Title = "Add Your Friends";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@using (Html.BeginForm(FormMethod.Post)) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Add Friend</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.name, "What's your friend's name?", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="streetAddress" class="control-label col-md-2">Street Address: </label>
+            <div class="col-md-10">
+                <input type="text" id="streetAddress" name="streetAddress" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success">Find Friend</button>
+                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+            </div>
+        </div>
+    </div>
+}
