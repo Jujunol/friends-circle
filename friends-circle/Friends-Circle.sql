@@ -3,5 +3,6 @@
     name varchar(25) not null,
 	street varchar(50) not null,
     latitude varchar(50) not null,
-    longitude varchar(50) not null
+    longitude varchar(50) not null,
+	full_address varchar(100) not null
 );

@@ -178,6 +178,7 @@
     <Compile Include="Models\AddFriendViewModel.cs" />
     <Compile Include="Models\Friend.cs" />
     <Compile Include="Models\FriendContext.cs" />
+    <Compile Include="Models\GoogleMapsAPI.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

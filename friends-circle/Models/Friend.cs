@@ -35,5 +35,10 @@ namespace friends_circle.Models
         [Column(Order = 4)]
         [StringLength(50)]
         public string longitude { get; set; }
+
+        [Key]
+        [Column(Order = 5)]
+        [StringLength(100)]
+        public string full_address { get; set; }
     }
 }
