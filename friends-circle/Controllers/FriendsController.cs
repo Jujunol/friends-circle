@@ -52,8 +52,7 @@ namespace friends_circle.Controllers
 
                 // check if the friend already exists
                 var check = (from friendList in db.friends
-                             where friendList.name == viewModel.friend.name
-                             && friendList.full_address == viewModel.friend.full_address
+                             where friendList.full_address == viewModel.friend.full_address
                              select friendList).FirstOrDefault();
 
                 if (check != null)
