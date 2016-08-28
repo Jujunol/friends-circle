@@ -71,6 +71,10 @@ namespace friends_circle.Controllers
                 dynamic response = JsonConvert.DeserializeObject(jsonResponse);
                 string status = response.status;
 
+                /*
+                    Status codes are standard GoogleAPI responses
+                    https://developers.google.com/maps/documentation/geocoding/intro#StatusCodes
+                */
                 if (status == "OK")
                 {
                     // grab the latitude and longitude and store them
@@ -80,15 +84,17 @@ namespace friends_circle.Controllers
 
                     viewModel.friend.latitude = lat;
                     viewModel.friend.longitude = lng;
+
+                    db.friends.Add(viewModel.friend);
                     db.SaveChanges();
                 }
                 else if (status == "ZERO_RESULTS")
                 {
-                    return RedirectToAction("Index", new { message = 1 });
+                    return RedirectToAction("Add", new { message = 1 });
                 }
                 else
                 {
-                    return RedirectToAction("Index", new { message = 2 });
+                    return RedirectToAction("Add", new { message = 2 });
                 }
             }
 

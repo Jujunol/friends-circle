@@ -1,4 +1,5 @@
-﻿@model IEnumerable<friends_circle.Models.Friend>
+﻿@using friends_circle.Models
+@model IEnumerable<Friend>
 @{
     ViewBag.Title = "Index";
 }
@@ -13,6 +14,12 @@
         <th>Location</th>
     </tr>
     @* @TODO loop through and find users here *@
-
+    @foreach (Friend friend in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(name => friend.name)</td>
+            <td>@Html.DisplayFor(street => friend.street)</td>
+        </tr>
+    }
 
 </table>

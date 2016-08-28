@@ -9,6 +9,7 @@ namespace friends_circle.Models
 
     public partial class Friend
     {
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         [Key]
         [Column(Order = 0)]
         public int friend_id { get; set; }
