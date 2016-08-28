@@ -5,7 +5,7 @@ using System.Web;
 
 namespace friends_circle.Models
 {
-    public class AddFriendViewModel
+    public class FriendAddViewModel
     {
 
         public Friend friend { get; set; }

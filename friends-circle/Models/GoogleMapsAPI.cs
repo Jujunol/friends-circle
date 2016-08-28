@@ -53,6 +53,21 @@ namespace friends_circle.Models
             return null;
         }
 
+        /* Retrives the approximate location using latitude and longitude from Google Maps
+         * @return string : Full Street Address
+         * @return null : If an error occured
+         */
+        public string getAddressInfoByLocation(string location)
+        {
+            dynamic response = askGoogle("latlng=" + location);
+            if (checkResponse(response))
+            {
+                return response.results.First.formatted_address;
+            }
+
+            return null;
+        }
+
         private bool checkResponse(dynamic response)
         {
             if (response == null)

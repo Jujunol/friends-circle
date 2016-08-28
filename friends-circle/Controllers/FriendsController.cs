@@ -17,14 +17,31 @@ namespace friends_circle.Controllers
         // GET: Friends
         public ActionResult Index()
         {
-            /* @TODO Disance logic */
-            return View(db.friends.ToList());
+            // retrieve the current Client's IP
+            string clientIp = Request.UserHostAddress;
+
+            // use IpApi to retrieve the client's location
+            string location = new WebClient().DownloadString(String.Format("https://ipapi.co/{0}/latlong/", clientIp));
+            string lat = location.Substring(0, location.IndexOf(",")).Trim();
+            string lng = location.Substring(lat.Length).Trim();
+
+            GoogleMapsAPI maps = GoogleMapsAPI.getInstance();
+            string address = maps.getAddressInfoByLocation(location);
+
+            FriendListViewModel viewModel = new FriendListViewModel()
+            {
+                friendList = db.friends.ToList(),
+                lat = lat,
+                lng = lng,
+                location = address
+            };
+            return View(viewModel);
         }
 
         // GET: Friends/Add
         public ActionResult Add(int? message)
         {
-            AddFriendViewModel viewModel = new AddFriendViewModel();
+            FriendAddViewModel viewModel = new FriendAddViewModel();
 
             if (message != null)
             {
@@ -38,7 +55,7 @@ namespace friends_circle.Controllers
 
         // POST: Friends/Add
         [HttpPost]
-        public ActionResult Add(AddFriendViewModel viewModel)
+        public ActionResult Add(FriendAddViewModel viewModel)
         {
             GoogleMapsAPI maps = GoogleMapsAPI.getInstance();
             string[] location = maps.getAddressInfoByStreet(viewModel.friend.street);
