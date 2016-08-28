@@ -1,13 +1,18 @@
-﻿@{
+﻿@model IEnumerable<friends_circle.Models.Friend>
+@{
     ViewBag.Title = "Index";
 }
 
 <h2>Your Friends' Circle</h2>
-
+<p>
+    <a href="@Url.Action("Add")" class="btn btn-success"><i class="fa fa-plus"></i> Create</a>
+</p>
 <table class="table table-bordered table-hover table-striped">
     <tr>
-        <th></th>
+        <th>Name</th>
+        <th>Location</th>
     </tr>
     @* @TODO loop through and find users here *@
+
 
 </table>

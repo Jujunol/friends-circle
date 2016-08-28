@@ -1,13 +1,19 @@
 ﻿using friends_circle.Models;
+using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 
 namespace friends_circle.Controllers
 {
@@ -19,8 +25,8 @@ namespace friends_circle.Controllers
         // GET: Friends
         public ActionResult Index()
         {
-            
-            return View();
+            /* @TODO Disance logic */
+            return View(db.friends.ToList());
         }
 
         // GET: Friends/Add
@@ -28,10 +34,10 @@ namespace friends_circle.Controllers
         {
             AddFriendViewModel viewModel = new AddFriendViewModel();
 
-            if(message != null)
+            if (message != null)
             {
                 // safeguard range
-                int index = message >= messages.Length || message < 0 ? messages.Length - 1 : (int)message ;
+                int index = message >= messages.Length || message < 0 ? messages.Length - 1 : (int)message;
                 viewModel.message = messages[index];
             }
 
@@ -48,13 +54,13 @@ namespace friends_circle.Controllers
                          && friendList.street == viewModel.friend.street
                          select friendList).FirstOrDefault();
 
-            if(check != null)
+            if (check != null)
             {
                 return RedirectToAction("Index", new { message = 0 });
             }
 
             // grab longitude and latitude from Google API
-            string url = String.Format("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}", 
+            string url = String.Format("https://maps.googleapis.com/maps/api/geocode/json?address={0}&key={1}",
                 Url.Encode(viewModel.friend.street),
                 "AIzaSyBSq0tOBLsN4x6qxSRZ5unjeVdAiBeoFXM");
             string jsonResponse = new WebClient().DownloadString(url);
@@ -62,20 +68,32 @@ namespace friends_circle.Controllers
             // attempt to deserialize the object
             using (MemoryStream memoryStream = new MemoryStream(Encoding.Unicode.GetBytes(jsonResponse)))
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(GoogleAPIResponse));
-                GoogleAPIResponse response = (GoogleAPIResponse)serializer.ReadObject(memoryStream);
+                dynamic response = JsonConvert.DeserializeObject(jsonResponse);
+                string status = response.status;
+
+                if (status == "OK")
+                {
+                    // grab the latitude and longitude and store them
+                    dynamic location = response.results.First.geometry.location;
+                    string lat = location.lat;
+                    string lng = location.lng;
+
+                    viewModel.friend.latitude = lat;
+                    viewModel.friend.longitude = lng;
+                    db.SaveChanges();
+                }
+                else if (status == "ZERO_RESULTS")
+                {
+                    return RedirectToAction("Index", new { message = 1 });
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { message = 2 });
+                }
             }
 
             return RedirectToAction("Index");
         }
-        
-    }
 
-    [Serializable]
-    public class GoogleAPIResponse
-    {
-        public string status { get; set; }
-        public int lat { get; set; }
-        public int lng { get; set; }
     }
 }
