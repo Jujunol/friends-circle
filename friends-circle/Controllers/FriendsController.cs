@@ -19,6 +19,12 @@ namespace friends_circle.Controllers
         {
             // retrieve the current Client's IP
             string clientIp = Request.UserHostAddress;
+            
+            // debugging for localhost
+            if(clientIp == "::1")
+            {
+                clientIp = "65.92.33.108";
+            }
 
             // use IpApi to retrieve the client's location
             string location = new WebClient().DownloadString(String.Format("https://ipapi.co/{0}/latlong/", clientIp));
