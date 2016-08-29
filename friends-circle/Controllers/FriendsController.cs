@@ -23,10 +23,10 @@ namespace friends_circle.Controllers
             // use IpApi to retrieve the client's location
             string location = new WebClient().DownloadString(String.Format("https://ipapi.co/{0}/latlong/", clientIp));
             string lat = location.Substring(0, location.IndexOf(",")).Trim();
-            string lng = location.Substring(lat.Length).Trim();
+            string lng = location.Substring(lat.Length + 1).Trim();
 
             GoogleMapsAPI maps = GoogleMapsAPI.getInstance();
-            string address = maps.getAddressInfoByLocation(location);
+            string address = maps.getAddressInfoByLocation(lat, lng);
 
             FriendListViewModel viewModel = new FriendListViewModel()
             {

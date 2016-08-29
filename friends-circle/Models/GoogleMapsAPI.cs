@@ -57,9 +57,9 @@ namespace friends_circle.Models
          * @return string : Full Street Address
          * @return null : If an error occured
          */
-        public string getAddressInfoByLocation(string location)
+        public string getAddressInfoByLocation(string lat, string lng)
         {
-            dynamic response = askGoogle("latlng=" + location);
+            dynamic response = askGoogle(String.Format("latlng={0},{1}", lat, lng));
             if (checkResponse(response))
             {
                 return response.results.First.formatted_address;
