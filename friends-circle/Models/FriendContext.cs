@@ -16,6 +16,7 @@ namespace friends_circle.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Friend>()
                 .Property(e => e.name)
                 .IsUnicode(false);
@@ -26,6 +27,14 @@ namespace friends_circle.Models
 
             modelBuilder.Entity<Friend>()
                 .Property(e => e.longitude)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Friend>()
+                .Property(e => e.full_address)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<Friend>()
+                .Property(e => e.street)
                 .IsUnicode(false);
         }
     }

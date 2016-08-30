@@ -18,13 +18,15 @@
     <tr>
         <th>Name</th>
         <th>Location</th>
+        <th>Distance</th>
     </tr>
     @* @TODO loop through and find users here *@
-    @foreach (Friend friend in Model.friendList)
+    @foreach (FriendWithDistanceViewModel friend in Model.friendList)
     {
         <tr>
             <td>@Html.DisplayFor(name => friend.name)</td>
             <td>@Html.DisplayFor(street => friend.full_address)</td>
+            <td>@Html.DisplayFor(distance => friend.distance)</td>
         </tr>
     }
 

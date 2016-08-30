@@ -12,33 +12,34 @@ namespace friends_circle.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         [Key]
         [Column(Order = 0)]
-        public int friend_id { get; set; }
+        public virtual int friend_id { get; set; }
 
         [Key]
         [Column(Order = 1)]
         [StringLength(25)]
         [DisplayName("Name: ")]
-        public string name { get; set; }
+        public virtual string name { get; set; }
 
         [Key]
         [Column(Order = 2)]
         [StringLength(50)]
         [DisplayName("Street Address: ")]
-        public string street { get; set; }
+        public virtual string street { get; set; }
 
         [Key]
         [Column(Order = 3)]
         [StringLength(50)]
-        public string latitude { get; set; }
+        public virtual string latitude { get; set; }
 
         [Key]
         [Column(Order = 4)]
         [StringLength(50)]
-        public string longitude { get; set; }
+        public virtual string longitude { get; set; }
 
         [Key]
         [Column(Order = 5)]
         [StringLength(100)]
-        public string full_address { get; set; }
+        public virtual string full_address { get; set; }
+
     }
 }

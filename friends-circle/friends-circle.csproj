@@ -179,6 +179,7 @@
     <Compile Include="Models\Friend.cs" />
     <Compile Include="Models\FriendContext.cs" />
     <Compile Include="Models\FriendListViewModel.cs" />
+    <Compile Include="Models\FriendWithDistanceViewModel.cs" />
     <Compile Include="Models\GoogleMapsAPI.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -195,6 +196,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="geolist-procedure.sql" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="fonts\FontAwesome.otf" />

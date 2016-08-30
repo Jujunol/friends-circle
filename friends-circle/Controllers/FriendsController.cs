@@ -1,6 +1,7 @@
 ﻿using friends_circle.Models;
 using Newtonsoft.Json;
 using System;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -31,12 +32,17 @@ namespace friends_circle.Controllers
             string lat = location.Substring(0, location.IndexOf(",")).Trim();
             string lng = location.Substring(lat.Length + 1).Trim();
 
+            var pLat = new SqlParameter("p_lat", lat);
+            var pLng = new SqlParameter("p_lng", lng);
+
+            var friendList = db.Database.SqlQuery<FriendWithDistanceViewModel>("exec geodist @p_lat, @p_lng", pLat, pLng);
+
             GoogleMapsAPI maps = GoogleMapsAPI.getInstance();
             string address = maps.getAddressInfoByLocation(lat, lng);
 
             FriendListViewModel viewModel = new FriendListViewModel()
             {
-                friendList = db.friends.ToList(),
+                friendList = friendList,
                 lat = lat,
                 lng = lng,
                 location = address
@@ -76,6 +82,7 @@ namespace friends_circle.Controllers
                 // check if the friend already exists
                 var check = (from friendList in db.friends
                              where friendList.full_address == viewModel.friend.full_address
+                             && friendList.name == viewModel.friend.name 
                              select friendList).FirstOrDefault();
 
                 if (check != null)
@@ -83,7 +90,7 @@ namespace friends_circle.Controllers
                     return RedirectToAction("Add", new { message = 0 });
                 }
 
-                db.friends.Add(viewModel.friend);
+                db.friends.Add((Friend)viewModel.friend);
                 db.SaveChanges();
             }
             else if (maps.statusCode == GoogleMapsAPI.RESPONSE_NOT_FOUND)
