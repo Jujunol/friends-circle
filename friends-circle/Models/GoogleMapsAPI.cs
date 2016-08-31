@@ -11,7 +11,7 @@ namespace friends_circle.Models
     public class GoogleMapsAPI
     {
 
-        private static string key = "AIzaSyBSq0tOBLsN4x6qxSRZ5unjeVdAiBeoFXM";
+        private static string key = " AIzaSyCB8EcAme0xCZT5knWHBKEV2tzeTWa0L0k";
         public string statusCode { get; private set; }
 
         /*
