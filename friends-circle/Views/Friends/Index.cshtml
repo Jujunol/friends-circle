@@ -4,24 +4,42 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Your Friends' Circle</h2>
-<p class="lead">
+<h2><i class="fa fa-lg fa-group"></i> Your Friends' Circle</h2>
+<div class="bs-callout bs-callout-info">
+    <h4>Your Information</h4>
     IP: @Request.UserHostAddress <br />
-    Lat: @Model.lat <br />
-    Lng: @Model.lng <br />
-    Your Current Location: @Model.location
-</p>
+    Latitude: @Model.lat <br />
+    Longitude: @Model.lng <br />
+    Current Location: @Model.location
+</div>
 <p>
-    <a href="@Url.Action("Add")" class="btn btn-success"><i class="fa fa-plus"></i> Create</a>
+    <a href="@Url.Action("Add")" class="btn btn-success"><i class="fa fa-plus"></i> New Friend</a>
 </p>
 @using (Html.BeginForm("Index", "Friends", FormMethod.Get))
 {
-    <label>Show friends within distance (miles): </label>
-    <div class="col-md-4 input-group">
-        @Html.TextBox("DistanceSearch", null, new { @class = "form-control", placeholder = "Search" })
-        <span class="input-group-btn">
-            <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
-        </span>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="DistanceSearch" class="control-label">Show friends within distance: </label>
+            <div class="input-group">
+                @Html.TextBox("DistanceSearch", null, new { id = "DistanceSearch", @class = "form-control", placeholder = "Distance in Miles" })
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            @Html.RadioButton("FromWhere", "", true)
+            <label>Using Current Location:</label><br />
+        </div>
+
+        <div class="form-group">
+            @Html.RadioButton("FromWhere", "other", false)
+            <label>Using Centre of: </label>
+            @Html.TextBox("FromWhereCity", null, new { placeholder = "City" })
+        </div>
     </div>
 }
 <table class="table table-bordered table-hover table-striped">
