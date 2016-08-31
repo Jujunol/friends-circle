@@ -19,7 +19,7 @@ namespace friends_circle.Controllers
         public ActionResult Index(string DistanceSearch, string FromWhere, string FromWhereCity)
         {
             GoogleMapsAPI maps = GoogleMapsAPI.getInstance();
-
+            
             // retrieve the current Client's IP
             string clientIp = Request.UserHostAddress;
             
@@ -62,7 +62,9 @@ namespace friends_circle.Controllers
             // call the procedure
             var friendList = db.Database.SqlQuery<FriendWithDistanceViewModel>("exec geodist @p_lat, @p_lng, @p_dist", pLat, pLng, pDist);
 
+            // setup info for display
             string address = maps.getAddressInfoByLocation(lat, lng);
+            ViewBag.IntellisenseScript = GoogleMapsAPI.getIntellisenseScriptURL();
 
             FriendListViewModel viewModel = new FriendListViewModel()
             {
@@ -78,6 +80,7 @@ namespace friends_circle.Controllers
         public ActionResult Add(int? message)
         {
             FriendAddViewModel viewModel = new FriendAddViewModel();
+            ViewBag.IntellisenseScript = GoogleMapsAPI.getIntellisenseScriptURL();
 
             if (message != null)
             {

@@ -3,6 +3,10 @@
 @{
     ViewBag.Title = "Add Your Friends";
 }
+@section scripts {
+    <script src="/Scripts/GooglePlacesAPI.js"></script>
+    <script src="@ViewBag.IntellisenseScript" async defer></script>
+}
 
 
 @using (Html.BeginForm(FormMethod.Post)) 
@@ -17,34 +21,37 @@
         </div>
     }
     <div class="form-horizontal">
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="col-md-6">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.friend.name, htmlAttributes: new { @class = "control-label col-md-2", required = true })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.friend.name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.friend.name, "", new { @class = "text-danger" })
-                <small>What's your friend's name?</small>
+            <div class="form-group">
+                @Html.LabelFor(model => model.friend.name, htmlAttributes: new { @class = "control-label col-md-2"})
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.friend.name, new { htmlAttributes = new { @class = "form-control", required = true } })
+                    @Html.ValidationMessageFor(model => model.friend.name, "", new { @class = "text-danger" })
+                    <small>What's your friend's name?</small>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.friend.street, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.friend.street, new { htmlAttributes = new { @class = "form-control", required = true, placeholder = "100 Glen Erin, Toronto CA" }})
-                @Html.ValidationMessageFor(model => model.friend.street, "", new { @class = "text-danger" })
-                <small>Note: The full address isn't required but it helps us get the right address if you add your country</small>
+            <div class="form-group">
+                @Html.LabelFor(model => model.friend.street, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.friend.street, new { htmlAttributes = new { @class = "form-control", required = true, placeholder = "100 Glen Erin, Toronto CA" } })
+                    @Html.ValidationMessageFor(model => model.friend.street, "", new { @class = "text-danger" })
+                    <small>Note: The full address isn't required but it helps us get the right address if you add your country</small>
+                </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="submit" class="btn btn-success">Find Friend</button>
-                @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-success">Find Friend</button>
+                    @Html.ActionLink("Cancel", "Index", null, new { @class = "btn btn-default" })
+                </div>
             </div>
         </div>
     </div>
 }
+<div class="row"></div> <!-- Clear fix --> 
 <p>
     @Html.ActionLink("<--- Back to List", "Index")
 </p>

@@ -11,7 +11,7 @@ namespace friends_circle.Models
     public class GoogleMapsAPI
     {
 
-        private static string key = " AIzaSyCB8EcAme0xCZT5knWHBKEV2tzeTWa0L0k";
+        private static string key = "AIzaSyCB8EcAme0xCZT5knWHBKEV2tzeTWa0L0k";
         public string statusCode { get; private set; }
 
         /*
@@ -68,6 +68,8 @@ namespace friends_circle.Models
             return null;
         }
 
+        /* Checks the Google Response to Identify whether or not we got results
+         */
         private bool checkResponse(dynamic response)
         {
             if (response == null)
@@ -91,6 +93,8 @@ namespace friends_circle.Models
             return false;
         }
 
+        /* Asks Google for a response
+         */
         private dynamic askGoogle(string requestUrl)
         {
             // grab longitude and latitude from Google API
@@ -102,6 +106,12 @@ namespace friends_circle.Models
             {
                 return JsonConvert.DeserializeObject(jsonResponse);
             }
+        }
+
+        public static string getIntellisenseScriptURL()
+        {
+            return String.Format("https://maps.googleapis.com/maps/api/js?key={0}&signed_in=true&libraries=places&callback=initMap",
+                key);
         }
 
     }
