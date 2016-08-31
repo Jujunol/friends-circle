@@ -16,7 +16,7 @@ namespace friends_circle.Controllers
         string[] messages = { "That Friend has already been added!", "That address doesn't exist!", "Unknown Error" };
 
         // GET: Friends
-        public ActionResult Index()
+        public ActionResult Index(string DistanceSearch)
         {
             // retrieve the current Client's IP
             string clientIp = Request.UserHostAddress;
@@ -32,10 +32,15 @@ namespace friends_circle.Controllers
             string lat = location.Substring(0, location.IndexOf(",")).Trim();
             string lng = location.Substring(lat.Length + 1).Trim();
 
+            double dist = 10000;
+            if (!String.IsNullOrEmpty(DistanceSearch))
+                Double.TryParse(DistanceSearch, out dist);
+
             var pLat = new SqlParameter("p_lat", lat);
             var pLng = new SqlParameter("p_lng", lng);
+            var pDist = new SqlParameter("p_dist", dist);
 
-            var friendList = db.Database.SqlQuery<FriendWithDistanceViewModel>("exec geodist @p_lat, @p_lng", pLat, pLng);
+            var friendList = db.Database.SqlQuery<FriendWithDistanceViewModel>("exec geodist @p_lat, @p_lng, @p_dist", pLat, pLng, pDist);
 
             GoogleMapsAPI maps = GoogleMapsAPI.getInstance();
             string address = maps.getAddressInfoByLocation(lat, lng);

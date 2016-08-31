@@ -14,6 +14,16 @@
 <p>
     <a href="@Url.Action("Add")" class="btn btn-success"><i class="fa fa-plus"></i> Create</a>
 </p>
+@using (Html.BeginForm("Index", "Friends", FormMethod.Get))
+{
+    <label>Show friends within distance (miles): </label>
+    <div class="col-md-4 input-group">
+        @Html.TextBox("DistanceSearch", null, new { @class = "form-control", placeholder = "Search" })
+        <span class="input-group-btn">
+            <button type="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+        </span>
+    </div>
+}
 <table class="table table-bordered table-hover table-striped">
     <tr>
         <th>Name</th>
