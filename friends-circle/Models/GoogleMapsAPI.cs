@@ -102,10 +102,7 @@ namespace friends_circle.Models
             string jsonResponse = new WebClient().DownloadString(url);
 
             // attempt to deserialize the object
-            using (MemoryStream memoryStream = new MemoryStream(Encoding.Unicode.GetBytes(jsonResponse)))
-            {
-                return JsonConvert.DeserializeObject(jsonResponse);
-            }
+            return JsonConvert.DeserializeObject(jsonResponse);
         }
 
         public static string getIntellisenseScriptURL()
