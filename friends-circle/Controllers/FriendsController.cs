@@ -144,7 +144,7 @@ namespace friends_circle.Controllers
             }
 
             // make sure we're not using a local host connection
-            else if (request.UserHostAddress.Length != 0 && request.UserHostAddress != "::1" && request.UserHostAddress != "localhost")
+            else if (request.UserHostAddress.Length != 0 && request.UserHostAddress != "::1" && request.UserHostAddress != "localhost" && request.UserHostAddress != "127.0.0.1")
             {
                 userIP = request.UserHostAddress;
             }
