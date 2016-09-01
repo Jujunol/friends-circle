@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Web;
 using System.Web.Mvc;
 
 namespace friends_circle.Controllers
@@ -21,13 +22,7 @@ namespace friends_circle.Controllers
             GoogleMapsAPI maps = GoogleMapsAPI.getInstance();
             
             // retrieve the current Client's IP
-            string clientIp = Request.UserHostAddress;
-            
-            // debugging for localhost
-            if(clientIp == "::1")
-            {
-                clientIp = "65.92.33.108";
-            }
+            string clientIp = getUsersIP();
 
             // use IpApi to retrieve the client's location
             // or use search city
@@ -69,6 +64,7 @@ namespace friends_circle.Controllers
             FriendListViewModel viewModel = new FriendListViewModel()
             {
                 friendList = friendList,
+                clientIp = clientIp,
                 lat = lat,
                 lng = lng,
                 location = address
@@ -130,6 +126,38 @@ namespace friends_circle.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        public string getUsersIP()
+        {
+            string userIP = String.Empty;
+            HttpRequest request = System.Web.HttpContext.Current.Request;
+
+            // proxy detection
+            if (request.ServerVariables["HTTP_CLIENT_IP"] != null)
+            {
+                userIP = request.ServerVariables["HTTP_CLIENT_IP"].ToString();
+            }
+            else if (request.ServerVariables["HTTP_X_FORWARDED_FOR"] != null)
+            {
+                userIP = request.ServerVariables["HTTP_X_FORWARDED_FOR"].ToString();
+            }
+
+            // make sure we're not using a local host connection
+            else if (request.UserHostAddress.Length != 0 && request.UserHostAddress != "::1" && request.UserHostAddress != "localhost")
+            {
+                userIP = request.UserHostAddress;
+            }
+            // when all else fails, we'll use an external source to tell us
+            else
+            {
+                string html = new WebClient().DownloadString("http://checkip.dyndns.org");
+
+                int index1 = html.IndexOf("Address: ") + 9;
+                int index2 = html.IndexOf("</body>") - index1;
+                userIP = html.Substring(index1, index2).Trim();
+            }
+            return userIP;
         }
 
     }
